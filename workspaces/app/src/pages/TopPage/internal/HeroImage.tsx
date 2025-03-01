@@ -45,7 +45,7 @@ export const HeroImage: React.FC = () => {
 
     const textureLoader = new TextureLoader();
 
-    textureLoader.load("/assets/hero.png", (texture) => {
+    textureLoader.load('/assets/hero.png', (texture) => {
       const geometry = new PlaneGeometry(2, 2);
       const material = new ShaderMaterial({
         fragmentShader: `uniform sampler2D tImage;
