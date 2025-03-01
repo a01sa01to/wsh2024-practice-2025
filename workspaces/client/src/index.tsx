@@ -1,5 +1,3 @@
-import './side-effects';
-
 import $ from 'jquery';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';

@@ -9,13 +9,8 @@
   },
   "dependencies": {
     "@jsquash/jxl": "1.1.0",
-    "@webcomponents/webcomponentsjs": "2.8.0",
     "@wsh-2024/admin": "workspace:*",
     "@wsh-2024/app": "workspace:*",
-    "core-js": "3.36.0",
-    "es5-shim": "4.6.7",
-    "es6-shim": "0.35.8",
-    "es7-shim": "6.0.0",
     "fzstd": "0.1.0",
     "jimp": "0.22.12",
     "jquery": "3.7.1",
@@ -24,9 +19,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-router-dom": "6.18.0",
-    "regenerator-runtime": "0.14.1",
-    "swr": "2.2.4",
-    "unorm": "1.6.0"
+    "swr": "2.2.4"
   },
   "devDependencies": {
     "@node-kit/pnpm-workspace-root": "3.2.0",
