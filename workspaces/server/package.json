@@ -5,7 +5,7 @@
     "build": "pnpm run build:clean && pnpm run build:tsup && pnpm run build:copy",
     "build:clean": "rm -rf ./dist",
     "build:copy": "cp -r ./seeds/images ./dist/images",
-    "build:tsup": "tsup",
+    "build:tsup": "NODE_ENV=production tsup",
     "start": "node ./dist/server.js"
   },
   "dependencies": {
