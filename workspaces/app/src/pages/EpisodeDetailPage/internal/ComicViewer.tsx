@@ -48,7 +48,7 @@ export const ComicViewer: React.FC<Props> = ({ episodeId }) => {
   // 1ページの高さの候補
   const candidatePageHeight = (candidatePageWidth / IMAGE_WIDTH) * IMAGE_HEIGHT;
   // ビュアーの高さ
-  const viewerHeight = Math.max(MIN_VIEWER_HEIGHT, Math.min(candidatePageHeight, MAX_VIEWER_HEIGHT))
+  const viewerHeight = Math.max(MIN_VIEWER_HEIGHT, Math.min(candidatePageHeight, MAX_VIEWER_HEIGHT));
 
   return (
     <_Container ref={ref}>
