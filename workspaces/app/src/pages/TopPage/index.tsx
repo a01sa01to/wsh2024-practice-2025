@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { Suspense, useId } from 'react';
 
 import { BookCard } from '../../features/book/components/BookCard';
@@ -39,7 +38,7 @@ const TopPage: React.FC = () => {
           <Spacer height={Space * 2} />
           <Box maxWidth="100%" overflowX="scroll" overflowY="hidden">
             <Flex align="stretch" direction="row" gap={Space * 2} justify="flex-start">
-              {_.map(featureList, (feature) => (
+              {featureList.map((feature) => (
                 <FeatureCard key={feature.id} bookId={feature.book.id} />
               ))}
             </Flex>
@@ -55,7 +54,7 @@ const TopPage: React.FC = () => {
           <Spacer height={Space * 2} />
           <Box maxWidth="100%" overflowX="hidden" overflowY="hidden">
             <Flex align="center" as="ul" direction="column" justify="center">
-              {_.map(rankingList, (ranking) => (
+              {rankingList.map((ranking) => (
                 <RankingCard key={ranking.id} bookId={ranking.book.id} />
               ))}
             </Flex>
@@ -71,7 +70,7 @@ const TopPage: React.FC = () => {
           <Spacer height={Space * 2} />
           <Box maxWidth="100%" overflowX="scroll" overflowY="hidden">
             <Flex align="stretch" gap={Space * 2} justify="flex-start">
-              {_.map(release.books, (book) => (
+              {release.books.map((book) => (
                 <BookCard key={book.id} bookId={book.id} />
               ))}
             </Flex>

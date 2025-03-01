@@ -126,9 +126,6 @@ importers:
       jquery:
         specifier: 3.7.1
         version: 3.7.1
-      lodash:
-        specifier: 4.17.21
-        version: 4.17.21
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -163,9 +160,6 @@ importers:
       '@types/jquery':
         specifier: 3.5.29
         version: 3.5.29
-      '@types/lodash':
-        specifier: 4.14.202
-        version: 4.14.202
       '@types/react':
         specifier: 18.2.0
         version: 18.2.0
@@ -3525,6 +3519,7 @@ packages:
 
   /@types/lodash@4.14.202:
     resolution: {integrity: sha512-OvlIYQK9tNneDlS0VN54LLd5uiPCBOp7gS5Z0f1mjoJYBrtStzgmJBxONW3U6OZqdtNzZPmn9BS/7WI7BFFcFQ==}
+    dev: false
 
   /@types/node@16.9.1:
     resolution: {integrity: sha512-QpLcX9ZSsq3YYUUnD3nFDY8H7wctAhQj/TFKL8Ya8v5fMm3CFXxo8zStsLAl780ltoYoo1WvKUVGBQK+1ifr7g==}
