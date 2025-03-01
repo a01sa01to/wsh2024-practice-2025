@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { SWRConfig } from 'swr';
@@ -13,12 +12,14 @@ const main = async () => {
   await registerServiceWorker();
   await preloadImages();
 
-  $(document).ready(() => {
+  const fn = () => {
+    const root = document.getElementById('root');
+    if (!root) throw new Error('Root element not found');
     if (window.location.pathname.startsWith('/admin')) {
-      ReactDOM.createRoot($('#root').get(0)!).render(<AdminApp />);
+      ReactDOM.createRoot(root).render(<AdminApp />);
     } else {
       ReactDOM.hydrateRoot(
-        $('#root').get(0)!,
+        root,
         <SWRConfig value={{ revalidateIfStale: true, revalidateOnFocus: false, revalidateOnReconnect: false }}>
           <BrowserRouter>
             <ClientApp />
@@ -26,7 +27,13 @@ const main = async () => {
         </SWRConfig>,
       );
     }
-  });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', fn);
+  } else {
+    fn();
+  }
 };
 
 main().catch(console.error);
