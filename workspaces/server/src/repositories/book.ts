@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm';
+import { and, eq, exists } from 'drizzle-orm';
 import { HTTPException } from 'hono/http-exception';
 import { err, ok } from 'neverthrow';
 import type { Result } from 'neverthrow';
@@ -222,19 +222,10 @@ class BookRepository implements BookRepositoryInterface {
   async delete(options: { params: DeleteBookRequestParams }): Promise<Result<DeleteBookResponse, HTTPException>> {
     try {
       getDatabase().transaction(async (tx) => {
-        await tx.delete(book).where(eq(book.id, options.params.bookId)).execute();
-        await tx.delete(feature).where(eq(feature.bookId, options.params.bookId)).execute();
+        await tx.delete(episodePage).where(exists(tx.select().from(episode).where(and(eq(episodePage.episodeId, episode.id), eq(episode.bookId, options.params.bookId))))).execute();
         await tx.delete(ranking).where(eq(ranking.bookId, options.params.bookId)).execute();
-        const deleteEpisodeRes = await tx
-          .delete(episode)
-          .where(eq(episode.bookId, options.params.bookId))
-          .returning({
-            episodeId: episode.id,
-          })
-          .execute();
-        for (const episode of deleteEpisodeRes) {
-          await tx.delete(episodePage).where(eq(episodePage.episodeId, episode.episodeId)).execute();
-        }
+        await tx.delete(feature).where(eq(feature.bookId, options.params.bookId)).execute();
+        await tx.delete(book).where(eq(book.id, options.params.bookId)).execute();
       });
 
       return ok({});
