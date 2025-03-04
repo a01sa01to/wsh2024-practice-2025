@@ -47,7 +47,7 @@ export const HeroImage: React.FC = () => {
 
   return (
     <_Wrapper>
-      <_Image ref={imageRef} alt="Cyber TOON" src="/assets/hero.png" />
+      <_Image ref={imageRef} alt="Cyber TOON" src="/assets/hero.avif" />
     </_Wrapper>
   );
 };
