@@ -1,7 +1,7 @@
 /* eslint-disable sort/object-properties */
 import { randomUUID } from 'node:crypto';
 
-import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import { index, integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 export const episode = sqliteTable('episode', {
   // primary key
@@ -26,4 +26,6 @@ export const episode = sqliteTable('episode', {
   updatedAt: text('updated_at')
     .notNull()
     .$defaultFn(() => new Date().toISOString()),
-});
+}, table => ({
+  chapterIdx: index("episode_chapter_idx").on(table.chapter),
+}));
