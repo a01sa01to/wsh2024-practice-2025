@@ -70,9 +70,9 @@ class BookRepository implements BookRepositoryInterface {
                 columns: {
                   alt: true,
                   id: true,
-                }
-              }
-            }
+                },
+              },
+            },
           },
           image: {
             columns: {
@@ -151,7 +151,7 @@ class BookRepository implements BookRepositoryInterface {
                   id: true,
                 },
               },
-            }
+            },
           },
           image: {
             columns: {

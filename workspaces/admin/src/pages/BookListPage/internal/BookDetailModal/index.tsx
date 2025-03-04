@@ -44,19 +44,23 @@ export const BookDetailModal: React.FC<Props> = ({ book, isOpen, onClose, refetc
       <ModalContent containerProps={{ p: 8 }} height="100%" m={0} overflowY="auto">
         <ModalCloseButton />
         <Stack height="100%" p={4}>
-          {book != null && (
-            isEdit ? (
+          {book != null &&
+            (isEdit ? (
               <BookEditContent book={book} onEditComplete={() => toggleIEdit()} />
             ) : (
-              <BookDetailContent book={book} onCloseDialog={onClose} onEdit={() => toggleIEdit()} refetchBookList={refetchBookList} />
-            )
-          )}
+              <BookDetailContent
+                book={book}
+                onCloseDialog={onClose}
+                onEdit={() => toggleIEdit()}
+                refetchBookList={refetchBookList}
+              />
+            ))}
 
           <Divider />
 
           <Flex flexGrow={1} flexShrink={1} overflow="hidden">
-            {episodeList != null && (
-              episodeList.length !== 0 ? (
+            {episodeList != null &&
+              (episodeList.length !== 0 ? (
                 <TableContainer flexGrow={1} flexShrink={1} overflowY="auto">
                   <Table aria-label="エピソード一覧" variant="striped">
                     <Thead backgroundColor="white" position="sticky" top={0} zIndex={1}>
@@ -94,8 +98,7 @@ export const BookDetailModal: React.FC<Props> = ({ book, isOpen, onClose, refetc
                 <Text align="center" flexGrow={1} flexShrink={1} pt={2}>
                   エピソードがありません
                 </Text>
-              )
-            )}
+              ))}
           </Flex>
 
           <Flex justifyContent="flex-end">

@@ -23,7 +23,7 @@ import { AuthorDetailContent } from './AuthorDetailContent';
 import { AuthorEditContent } from './AuthorEditContent';
 
 export type Props = {
-  author?: GetAuthorListResponse[0]
+  author?: GetAuthorListResponse[0];
   isOpen: boolean;
   onClose: () => void;
 };
@@ -33,7 +33,7 @@ export const AuthorDetailModal: React.FC<Props> = ({ author, isOpen, onClose }) 
 
   if (!author) return null;
 
-  const bookList = author.books
+  const bookList = author.books;
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="4xl">
@@ -41,19 +41,18 @@ export const AuthorDetailModal: React.FC<Props> = ({ author, isOpen, onClose }) 
       <ModalContent containerProps={{ p: 8 }} height="100%" m={0} overflowY="auto">
         <ModalCloseButton />
         <Stack height="100%" p={4}>
-          {author != null && (
-            isEdit ? (
+          {author != null &&
+            (isEdit ? (
               <AuthorEditContent author={author} onEditComplete={() => toggleIsEdit()} />
             ) : (
               <AuthorDetailContent author={author} onCloseDialog={onClose} onEdit={() => toggleIsEdit()} />
-            )
-          )}
+            ))}
 
           <Divider />
 
           <Flex flexGrow={1} flexShrink={1} overflow="hidden">
-            {bookList != null && (
-              bookList.length !== 0 ? (
+            {bookList != null &&
+              (bookList.length !== 0 ? (
                 <TableContainer flexGrow={1} flexShrink={1} overflowY="auto">
                   <Table aria-label="作品一覧" variant="striped">
                     <Thead backgroundColor="white" position="sticky" top={0} zIndex={1}>
@@ -79,8 +78,7 @@ export const AuthorDetailModal: React.FC<Props> = ({ author, isOpen, onClose }) 
                 <Text align="center" flexGrow={1} flexShrink={1} pt={2}>
                   作品はまだありません
                 </Text>
-              )
-            )}
+              ))}
           </Flex>
         </Stack>
       </ModalContent>

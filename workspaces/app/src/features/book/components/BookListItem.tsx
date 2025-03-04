@@ -29,7 +29,7 @@ const _ImgWrapper = styled.div`
 `;
 
 type Props = {
-  book: GetAuthorResponse['books'][0]
+  book: GetAuthorResponse['books'][0];
 };
 
 export const BookListItem: React.FC<Props> = ({ book }) => {

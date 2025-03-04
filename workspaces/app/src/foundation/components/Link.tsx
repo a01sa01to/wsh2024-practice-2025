@@ -1,4 +1,4 @@
-import { Link as LLink } from "react-router-dom"
+import { Link as LLink } from 'react-router-dom';
 
 type Props = {
   children: React.ReactNode;
@@ -7,7 +7,7 @@ type Props = {
 
 export const Link: React.FC<Props> = ({ children, href, to, ...rest }) => {
   return (
-    <LLink to={to ?? href ?? ""} {...rest}>
+    <LLink to={to ?? href ?? ''} {...rest}>
       {children}
     </LLink>
   );

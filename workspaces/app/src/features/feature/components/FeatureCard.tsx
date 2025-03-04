@@ -45,7 +45,7 @@ const _AvatarWrapper = styled.div`
 `;
 
 type Props = {
-  book: GetFeatureListResponse[0]['book']
+  book: GetFeatureListResponse[0]['book'];
 };
 
 const FeatureCard: React.FC<Props> = ({ book }) => {

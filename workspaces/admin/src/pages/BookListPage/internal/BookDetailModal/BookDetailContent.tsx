@@ -13,7 +13,12 @@ type BookDetailContentProps = {
   refetchBookList: () => void;
 };
 
-export const BookDetailContent: React.FC<BookDetailContentProps> = ({ book, onCloseDialog, onEdit, refetchBookList }) => {
+export const BookDetailContent: React.FC<BookDetailContentProps> = ({
+  book,
+  onCloseDialog,
+  onEdit,
+  refetchBookList,
+}) => {
   const { mutate: deleteBook } = useDeleteBook();
 
   const handleEditClick = useCallback(() => {

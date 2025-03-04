@@ -18,8 +18,8 @@ self.addEventListener('activate', (ev: ExtendableEvent) => {
 });
 
 self.addEventListener('fetch', (ev: FetchEvent) => {
-  const url = new URL(ev.request.url)
-  if (url.pathname.startsWith('/images') && url.searchParams.get("format") === "jxl") {
+  const url = new URL(ev.request.url);
+  if (url.pathname.startsWith('/images') && url.searchParams.get('format') === 'jxl') {
     ev.respondWith(
       queue.add(() => onFetch(ev.request), {
         throwOnTimeout: true,

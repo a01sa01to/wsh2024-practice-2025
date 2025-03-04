@@ -44,17 +44,17 @@ type BookModalMode = (typeof BookModalMode)[keyof typeof BookModalMode];
 
 type BookModalState =
   | {
-    mode: typeof BookModalMode.None;
-    params: object;
-  }
+      mode: typeof BookModalMode.None;
+      params: object;
+    }
   | {
-    mode: typeof BookModalMode.Detail;
-    params: { bookId: string };
-  }
+      mode: typeof BookModalMode.Detail;
+      params: { bookId: string };
+    }
   | {
-    mode: typeof BookModalMode.Create;
-    params: object;
-  };
+      mode: typeof BookModalMode.Create;
+      params: object;
+    };
 
 type BookModalAction = {
   close: () => void;
@@ -71,7 +71,7 @@ export const BookListPage: React.FC = () => {
       kind: BookSearchKind.BookId as BookSearchKind,
       query: '',
     },
-    onSubmit() { },
+    onSubmit() {},
   });
 
   const filteredBookList = useMemo(() => {
@@ -243,7 +243,12 @@ export const BookListPage: React.FC = () => {
       </Stack>
 
       {modalState.mode === BookModalMode.Detail ? (
-        <BookDetailModal isOpen book={bookList.find(book => book.id === modalState.params.bookId)} onClose={() => modalState.close()} refetchBookList={refetchBookList} />
+        <BookDetailModal
+          isOpen
+          book={bookList.find((book) => book.id === modalState.params.bookId)}
+          onClose={() => modalState.close()}
+          refetchBookList={refetchBookList}
+        />
       ) : null}
       {modalState.mode === BookModalMode.Create ? <CreateBookModal isOpen onClose={() => modalState.close()} /> : null}
     </>
