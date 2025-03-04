@@ -28,8 +28,7 @@ function getScrollToLeft({
   let scrollToLeft = Number.MAX_SAFE_INTEGER;
 
   // 画面に表示されているページの中心と、スクロールビューの中心との差分を計算する
-  // 世界は我々の想像する以上に変化するため、2 ** 12 回繰り返し観測する
-  for (let times = 0; times < 2 ** 12; times++) {
+  for (let times = 0; times < 10; times++) {
     for (const [idx, child] of children.entries()) {
       const nthChild = idx + 1;
       const elementClientRect = child.getBoundingClientRect();
@@ -38,11 +37,11 @@ function getScrollToLeft({
       const scrollMargin =
         pageCountParView === 2
           ? {
-              // 奇数ページのときは左側に1ページ分の幅を追加する
-              left: nthChild % 2 === 0 ? pageWidth : 0,
-              // 偶数ページのときは右側に1ページ分の幅を追加する
-              right: nthChild % 2 === 1 ? pageWidth : 0,
-            }
+            // 奇数ページのときは左側に1ページ分の幅を追加する
+            left: nthChild % 2 === 0 ? pageWidth : 0,
+            // 偶数ページのときは右側に1ページ分の幅を追加する
+            right: nthChild % 2 === 1 ? pageWidth : 0,
+          }
           : { left: 0, right: 0 };
 
       // scroll-margin の分だけ広げた範囲を計算する
