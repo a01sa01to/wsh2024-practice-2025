@@ -24,7 +24,6 @@ import { useEffect, useRef, useState } from 'react';
 import * as yup from 'yup';
 
 import { encrypt } from '@wsh-2024/image-encrypt/src/encrypt';
-import type { GetBookResponse } from '@wsh-2024/schema/src/api/books/GetBookResponse';
 import type { GetEpisodeResponse } from '@wsh-2024/schema/src/api/episodes/GetEpisodeResponse';
 
 import { getImageUrl } from '../../../lib/image/getImageUrl';
@@ -38,11 +37,11 @@ import { useUpdateEpisode } from '../hooks/useUpdateEpisode';
 import { ComicPageImage } from './ComicPageImage';
 
 type Props = {
-  book: GetBookResponse;
+  bookId: string;
   episode?: GetEpisodeResponse;
 };
 
-export const EpisodeDetailEditor: React.FC<Props> = ({ book, episode }) => {
+export const EpisodeDetailEditor: React.FC<Props> = ({ bookId, episode }) => {
   const navigate = useNavigate();
 
   const { mutate: createEpisode } = useCreateEpisode();
@@ -63,7 +62,7 @@ export const EpisodeDetailEditor: React.FC<Props> = ({ book, episode }) => {
       if (episode == null) {
         return createEpisode(
           {
-            bookId: book.id,
+            bookId,
             chapter: values.chapter!,
             description: values.description!,
             image: values.image!,
@@ -73,23 +72,22 @@ export const EpisodeDetailEditor: React.FC<Props> = ({ book, episode }) => {
           {
             onSuccess(episode) {
               navigate({
-                params: { bookId: book.id, episodeId: episode.id },
+                params: { bookId, episodeId: episode.id },
                 to: '/admin/books/$bookId/episodes/$episodeId',
               });
             },
           },
         );
-      } else {
-        return updateEpisode({
-          bookId: book.id,
-          chapter: values.chapter,
-          description: values.description,
-          episodeId: episode.id,
-          image: values.image,
-          name: values.name,
-          nameRuby: values.nameRuby,
-        });
       }
+      return updateEpisode({
+        bookId,
+        chapter: values.chapter,
+        description: values.description,
+        episodeId: episode.id,
+        image: values.image,
+        name: values.name,
+        nameRuby: values.nameRuby,
+      });
     },
     validationSchema: yup.object().shape({
       chapter: yup.number().required('章を入力してください'),
@@ -121,7 +119,7 @@ export const EpisodeDetailEditor: React.FC<Props> = ({ book, episode }) => {
     if (episode == null) return;
     deleteEpisode(
       {
-        bookId: book.id,
+        bookId,
         episodeId: episode.id,
       },
       {
@@ -199,24 +197,23 @@ export const EpisodeDetailEditor: React.FC<Props> = ({ book, episode }) => {
           px={4}
           py={8}
         >
-          {episode != null &&
-            episode.pages.map((page) => (
-              <StackItem key={page.id} as="li" flexGrow={0} flexShrink={0} position="relative">
-                <CloseButton
-                  aria-label="ページを削除"
-                  bg="white"
-                  boxShadow="md"
-                  onClick={() => handleRequestToDeletePage(page.id)}
-                  position="absolute"
-                  right={-4}
-                  rounded="full"
-                  top={-4}
-                />
-                <Box as="button" display="block">
-                  <ComicPageImage pageImageId={page.image.id} />
-                </Box>
-              </StackItem>
-            ))}
+          {episode?.pages.map((page) => (
+            <StackItem key={page.id} as="li" flexGrow={0} flexShrink={0} position="relative">
+              <CloseButton
+                aria-label="ページを削除"
+                bg="white"
+                boxShadow="md"
+                onClick={() => handleRequestToDeletePage(page.id)}
+                position="absolute"
+                right={-4}
+                rounded="full"
+                top={-4}
+              />
+              <Box as="button" display="block">
+                <ComicPageImage pageImageId={page.image.id} />
+              </Box>
+            </StackItem>
+          ))}
 
           <Flex align="center" as="li" height={264} justify="center">
             <FormControl>
@@ -359,7 +356,7 @@ export const EpisodeDetailEditor: React.FC<Props> = ({ book, episode }) => {
             </FormControl>
             <Box>
               <Text fontWeight="bold">エピソードが含まれる作品 ID</Text>
-              <Text color="gray.600">{book.id}</Text>
+              <Text color="gray.600">{bookId}</Text>
             </Box>
             <Box display="flex" gap={4} justifyContent="flex-end">
               <Button

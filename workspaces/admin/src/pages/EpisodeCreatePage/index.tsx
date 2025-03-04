@@ -17,5 +17,5 @@ export const EpisodeCreatePage: React.FC = () => {
     );
   }
 
-  return <EpisodeDetailEditor book={book} />;
+  return <EpisodeDetailEditor bookId={bookId} />;
 };
