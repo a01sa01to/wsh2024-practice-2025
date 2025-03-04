@@ -1,12 +1,14 @@
+import { Link as LLink } from "react-router-dom"
+
 type Props = {
   children: React.ReactNode;
   to?: string;
-} & JSX.IntrinsicElements['a'];
+} & Omit<JSX.IntrinsicElements['a'], 'ref'>;
 
-export const Link: React.FC<Props> = ({ children, to, ...rest }) => {
+export const Link: React.FC<Props> = ({ children, href, to, ...rest }) => {
   return (
-    <a href={to} {...rest}>
+    <LLink to={to ?? href ?? ""} {...rest}>
       {children}
-    </a>
+    </LLink>
   );
 };
