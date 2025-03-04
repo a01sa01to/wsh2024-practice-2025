@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm';
+import { and, eq, exists } from 'drizzle-orm';
 import { HTTPException } from 'hono/http-exception';
 import { err, ok } from 'neverthrow';
 import type { Result } from 'neverthrow';
@@ -202,28 +202,62 @@ class AuthorRepository implements AuthorRepositoryInterface {
   async delete(options: { params: DeleteAuthorRequestParams }): Promise<Result<DeleteAuthorResponse, HTTPException>> {
     try {
       await getDatabase().transaction(async (tx) => {
-        await tx.delete(author).where(eq(author.id, options.params.authorId)).execute();
-        const deleteBookRes = await tx
-          .delete(book)
-          .where(eq(book.authorId, options.params.authorId))
-          .returning({
-            bookId: book.id,
-          })
+        await tx
+          .delete(episodePage)
+          .where(
+            exists(
+              tx
+                .select()
+                .from(episode)
+                .where(
+                  and(
+                    eq(episodePage.episodeId, episode.id),
+                    exists(
+                      tx
+                        .select()
+                        .from(book)
+                        .where(and(eq(book.authorId, options.params.authorId), eq(episode.bookId, book.id))),
+                    ),
+                  ),
+                ),
+            ),
+          )
           .execute();
-        for (const book of deleteBookRes) {
-          await tx.delete(feature).where(eq(feature.bookId, book.bookId)).execute();
-          await tx.delete(ranking).where(eq(ranking.bookId, book.bookId)).execute();
-          const deleteEpisodeRes = await tx
-            .delete(episode)
-            .where(eq(episode.bookId, book.bookId))
-            .returning({
-              episodeId: episode.id,
-            })
-            .execute();
-          for (const episode of deleteEpisodeRes) {
-            await tx.delete(episodePage).where(eq(episodePage.episodeId, episode.episodeId)).execute();
-          }
-        }
+        await tx
+          .delete(episode)
+          .where(
+            exists(
+              tx
+                .select()
+                .from(book)
+                .where(and(eq(episode.bookId, book.id), eq(book.authorId, options.params.authorId))),
+            ),
+          )
+          .execute();
+        await tx
+          .delete(feature)
+          .where(
+            exists(
+              tx
+                .select()
+                .from(book)
+                .where(and(eq(feature.bookId, book.id), eq(book.authorId, options.params.authorId))),
+            ),
+          )
+          .execute();
+        await tx
+          .delete(ranking)
+          .where(
+            exists(
+              tx
+                .select()
+                .from(book)
+                .where(and(eq(ranking.bookId, book.id), eq(book.authorId, options.params.authorId))),
+            ),
+          )
+          .execute();
+        await tx.delete(book).where(eq(book.authorId, options.params.authorId));
+        await tx.delete(author).where(eq(author.id, options.params.authorId)).execute();
       });
 
       return ok({});
