@@ -27,6 +27,11 @@ export function initializeDatabase() {
   sqlite.exec('CREATE INDEX IF NOT EXISTS episode_page_page_idx ON episode_page (page);');
   sqlite.exec('CREATE INDEX IF NOT EXISTS feature_created_at_idx ON feature (created_at);');
   sqlite.exec('CREATE INDEX IF NOT EXISTS ranking_rank_idx ON ranking (rank);');
+  sqlite.exec('CREATE INDEX IF NOT EXISTS book_author_id_idx ON book (author_id);');
+  sqlite.exec('CREATE INDEX IF NOT EXISTS ranking_book_id_idx ON ranking (book_id);');
+  sqlite.exec('CREATE INDEX IF NOT EXISTS feature_book_id_idx ON feature (book_id);');
+  sqlite.exec('CREATE INDEX IF NOT EXISTS episode_book_id_idx ON episode (book_id);');
+  sqlite.exec('CREATE INDEX IF NOT EXISTS episode_page_episode_id_idx ON episode_page (episode_id);');
 
   database = drizzle(sqlite, { schema });
 }

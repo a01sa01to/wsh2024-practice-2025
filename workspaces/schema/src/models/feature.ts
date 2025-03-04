@@ -24,5 +24,6 @@ export const feature = sqliteTable(
   },
   (table) => ({
     createdAtIdx: index('feature_created_at_idx').on(table.createdAt),
+    bookIdIdx: index('feature_book_id_idx').on(table.bookId),
   }),
 );

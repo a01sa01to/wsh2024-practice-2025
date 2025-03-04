@@ -31,5 +31,6 @@ export const episode = sqliteTable(
   },
   (table) => ({
     chapterIdx: index('episode_chapter_idx').on(table.chapter),
+    bookIdIdx: index('episode_book_id_idx').on(table.bookId),
   }),
 );

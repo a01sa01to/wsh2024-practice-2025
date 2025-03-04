@@ -28,5 +28,6 @@ export const episodePage = sqliteTable(
   },
   (table) => ({
     pageIdx: index('episode_page_page_idx').on(table.page),
+    episodeIdIdx: index('episode_page_episode_id_idx').on(table.episodeId),
   }),
 );
