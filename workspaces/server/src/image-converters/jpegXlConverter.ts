@@ -21,8 +21,8 @@ export const jpegXlConverter = {
 
     const JPEGXL = await import('@jsquash/jxl');
     return JPEGXL.encode(data, {
-      effort: 0,
-      quality: 100,
+      effort: 6,
+      quality: 80,
     }).then((data) => new Uint8Array(data));
   },
 };
