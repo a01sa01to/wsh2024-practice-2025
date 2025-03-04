@@ -1,7 +1,6 @@
 /// <reference types="@types/serviceworker" />
 import PQueue from 'p-queue';
 
-import { jitter } from './jitter';
 import { transformJpegXLToBmp } from './transformJpegXLToBmp';
 import { zstdFetch as fetch } from './zstdFetch';
 
@@ -19,22 +18,17 @@ self.addEventListener('activate', (ev: ExtendableEvent) => {
 });
 
 self.addEventListener('fetch', (ev: FetchEvent) => {
-  ev.respondWith(
-    queue.add(() => onFetch(ev.request), {
-      throwOnTimeout: true,
-    }),
-  );
+  const url = new URL(ev.request.url)
+  if (url.pathname.startsWith('/images') && url.searchParams.get("format") === "jxl") {
+    ev.respondWith(
+      queue.add(() => onFetch(ev.request), {
+        throwOnTimeout: true,
+      }),
+    );
+  }
 });
 
 async function onFetch(request: Request): Promise<Response> {
-  // サーバーの負荷を分散するために Jitter 処理をいれる
-  await jitter();
-
   const res = await fetch(request);
-
-  if (res.headers.get('Content-Type') === 'image/jxl') {
-    return transformJpegXLToBmp(res);
-  } else {
-    return res;
-  }
+  return transformJpegXLToBmp(res);
 }
