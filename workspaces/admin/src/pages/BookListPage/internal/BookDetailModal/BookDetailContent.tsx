@@ -3,7 +3,6 @@ import { useCallback } from 'react';
 
 import type { GetBookResponse } from '@wsh-2024/schema/src/api/books/GetBookResponse';
 
-import { useBookList } from '../../../../features/books/hooks/useBookList';
 import { useDeleteBook } from '../../../../features/books/hooks/useDeleteBook';
 import { getImageUrl } from '../../../../lib/image/getImageUrl';
 
@@ -11,10 +10,10 @@ type BookDetailContentProps = {
   book: GetBookResponse;
   onCloseDialog: () => void;
   onEdit: () => void;
+  refetchBookList: () => void;
 };
 
-export const BookDetailContent: React.FC<BookDetailContentProps> = ({ book, onCloseDialog, onEdit }) => {
-  const { refetch: refetchBookList } = useBookList();
+export const BookDetailContent: React.FC<BookDetailContentProps> = ({ book, onCloseDialog, onEdit, refetchBookList }) => {
   const { mutate: deleteBook } = useDeleteBook();
 
   const handleEditClick = useCallback(() => {

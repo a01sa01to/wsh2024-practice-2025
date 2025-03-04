@@ -44,17 +44,17 @@ type BookModalMode = (typeof BookModalMode)[keyof typeof BookModalMode];
 
 type BookModalState =
   | {
-      mode: typeof BookModalMode.None;
-      params: object;
-    }
+    mode: typeof BookModalMode.None;
+    params: object;
+  }
   | {
-      mode: typeof BookModalMode.Detail;
-      params: { bookId: string };
-    }
+    mode: typeof BookModalMode.Detail;
+    params: { bookId: string };
+  }
   | {
-      mode: typeof BookModalMode.Create;
-      params: object;
-    };
+    mode: typeof BookModalMode.Create;
+    params: object;
+  };
 
 type BookModalAction = {
   close: () => void;
@@ -63,7 +63,7 @@ type BookModalAction = {
 };
 
 export const BookListPage: React.FC = () => {
-  const { data: bookList = [] } = useBookList();
+  const { data: bookList = [], refetch: refetchBookList } = useBookList();
   const bookListA11yId = useId();
 
   const formik = useFormik({
@@ -71,7 +71,7 @@ export const BookListPage: React.FC = () => {
       kind: BookSearchKind.BookId as BookSearchKind,
       query: '',
     },
-    onSubmit() {},
+    onSubmit() { },
   });
 
   const filteredBookList = useMemo(() => {
@@ -209,7 +209,7 @@ export const BookListPage: React.FC = () => {
             <Table variant="striped">
               <Thead backgroundColor="white" position="sticky" top={0} zIndex={1}>
                 <Tr>
-                  <Th w={120}></Th>
+                  <Th w={120} />
                   <Th>作品名</Th>
                   <Th>作者名</Th>
                 </Tr>
@@ -243,7 +243,7 @@ export const BookListPage: React.FC = () => {
       </Stack>
 
       {modalState.mode === BookModalMode.Detail ? (
-        <BookDetailModal isOpen bookId={modalState.params.bookId} onClose={() => modalState.close()} />
+        <BookDetailModal isOpen book={bookList.find(book => book.id === modalState.params.bookId)} onClose={() => modalState.close()} refetchBookList={refetchBookList} />
       ) : null}
       {modalState.mode === BookModalMode.Create ? <CreateBookModal isOpen onClose={() => modalState.close()} /> : null}
     </>
