@@ -222,7 +222,17 @@ class BookRepository implements BookRepositoryInterface {
   async delete(options: { params: DeleteBookRequestParams }): Promise<Result<DeleteBookResponse, HTTPException>> {
     try {
       getDatabase().transaction(async (tx) => {
-        await tx.delete(episodePage).where(exists(tx.select().from(episode).where(and(eq(episodePage.episodeId, episode.id), eq(episode.bookId, options.params.bookId))))).execute();
+        await tx
+          .delete(episodePage)
+          .where(
+            exists(
+              tx
+                .select()
+                .from(episode)
+                .where(and(eq(episodePage.episodeId, episode.id), eq(episode.bookId, options.params.bookId))),
+            ),
+          )
+          .execute();
         await tx.delete(ranking).where(eq(ranking.bookId, options.params.bookId)).execute();
         await tx.delete(feature).where(eq(feature.bookId, options.params.bookId)).execute();
         await tx.delete(book).where(eq(book.id, options.params.bookId)).execute();
