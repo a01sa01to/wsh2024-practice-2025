@@ -6,6 +6,5 @@ type Params = {
 };
 
 export function getImageUrl({ format, height, imageId, width }: Params): string {
-  const url = new URL(`/img/${imageId}-${width}x${height}.${format}`, location.href);
-  return url.href;
+  return `/img/${imageId}-${width}x${height}.${format}`;
 }
