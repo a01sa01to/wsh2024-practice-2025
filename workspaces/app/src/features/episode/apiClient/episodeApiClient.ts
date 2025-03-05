@@ -15,18 +15,20 @@ type EpisodeApiClient = DomainSpecificApiClientInterface<{
 
 export const episodeApiClient: EpisodeApiClient = {
   fetch: async ({ params }) => {
-    const response = await apiClient.get<GetEpisodeResponse>(inject('/api/v1/episodes/:episodeId', params));
-    return response.data;
+    const response = await apiClient.get(inject('/api/v1/episodes/:episodeId', params)).json<GetEpisodeResponse>();
+    return response;
   },
   fetch$$key: (options) => ({
     requestUrl: `/api/v1/episodes/:episodeId`,
     ...options,
   }),
   fetchList: async ({ query }) => {
-    const response = await apiClient.get<GetEpisodeListResponse>(inject('/api/v1/episodes', {}), {
-      params: query,
-    });
-    return response.data;
+    const response = await apiClient
+      .get(inject('/api/v1/episodes', {}), {
+        searchParams: query,
+      })
+      .json<GetEpisodeListResponse>();
+    return response;
   },
   fetchList$$key: (options) => ({
     requestUrl: `/api/v1/episodes`,

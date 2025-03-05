@@ -15,18 +15,20 @@ type AuthorApiClient = DomainSpecificApiClientInterface<{
 
 export const authorApiClient: AuthorApiClient = {
   fetch: async ({ params }) => {
-    const response = await apiClient.get<GetAuthorResponse>(inject('/api/v1/authors/:authorId', params));
-    return response.data;
+    const response = await apiClient.get(inject('/api/v1/authors/:authorId', params)).json<GetAuthorResponse>();
+    return response;
   },
   fetch$$key: (options) => ({
     requestUrl: `/api/v1/authors/:authorId`,
     ...options,
   }),
   fetchList: async ({ query }) => {
-    const response = await apiClient.get<GetAuthorListResponse>(inject('/api/v1/authors', {}), {
-      params: query,
-    });
-    return response.data;
+    const response = await apiClient
+      .get(inject('/api/v1/authors', {}), {
+        searchParams: query,
+      })
+      .json<GetAuthorListResponse>();
+    return response;
   },
   fetchList$$key: (options) => ({
     requestUrl: `/api/v1/authors`,

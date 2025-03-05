@@ -1,14 +1,14 @@
-import axios from 'axios';
+import ky from 'ky';
 
-const createAxiosInstance = () => {
-  const instance = axios.create({
-    baseURL: process.env['API_URL'] || '/',
+const createKyInstance = () => {
+  const instance = ky.create({
     headers: {
       'Content-Type': 'application/json',
     },
+    prefixUrl: process.env['API_URL'],
   });
 
   return instance;
 };
 
-export const apiClient = createAxiosInstance();
+export const apiClient = createKyInstance();
