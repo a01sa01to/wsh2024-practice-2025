@@ -6,7 +6,7 @@ import { HTTPException } from 'hono/http-exception';
 import ReactDOMServer from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom/server';
 import { ServerStyleSheet } from 'styled-components';
-import { unstable_serialize } from 'swr';
+import { unstable_serialize, SWRConfig } from 'swr';
 
 import { featureApiClient } from '@wsh-2024/app/src/features/feature/apiClient/featureApiClient';
 import { rankingApiClient } from '@wsh-2024/app/src/features/ranking/apiClient/rankingApiClient';
@@ -15,24 +15,22 @@ import { ClientApp } from '@wsh-2024/app/src/index';
 import { getDayOfWeekStr } from '@wsh-2024/app/src/lib/date/getDayOfWeekStr';
 
 import { INDEX_HTML_PATH } from '../../constants/paths';
+import { bookApiClient } from '@wsh-2024/app/src/features/book/apiClient/bookApiClient';
 
 const app = new Hono();
 
-async function createInjectDataStr(): Promise<Record<string, unknown>> {
+async function createInjectDataStr(path: string): Promise<Record<string, unknown>> {
   const json: Record<string, unknown> = {};
 
-  {
+  if (path === '/') {
+    // release, featureList, rankingList
     const dayOfWeek = getDayOfWeekStr(new Date());
     const releases = await releaseApiClient.fetch({ params: { dayOfWeek } });
     json[unstable_serialize(releaseApiClient.fetch$$key({ params: { dayOfWeek } }))] = releases;
-  }
 
-  {
     const features = await featureApiClient.fetchList({ query: {} });
     json[unstable_serialize(featureApiClient.fetchList$$key({ query: {} }))] = features;
-  }
 
-  {
     const ranking = await rankingApiClient.fetchList({ query: {} });
     json[unstable_serialize(rankingApiClient.fetchList$$key({ query: {} }))] = ranking;
   }
@@ -54,30 +52,22 @@ async function createHTML({
   const content = htmlContent
     .replaceAll('<div id="root"></div>', `<div id="root">${body}</div>`)
     .replaceAll('<style id="tag"></style>', styleTags);
-  // .replaceAll(
-  //   '<script id="inject-data" type="application/json"></script>',
-  //   `<script id="inject-data" type="application/json">
-  //     ${jsesc(injectData, {
-  //       isScriptContext: true,
-  //       json: true,
-  //       minimal: true,
-  //     })}
-  //   </script>`,
-  // );
 
   return content;
 }
 
 app.get('*', async (c) => {
-  const injectData = await createInjectDataStr();
+  const injectData = await createInjectDataStr(c.req.path);
   const sheet = new ServerStyleSheet();
 
   try {
     const body = ReactDOMServer.renderToString(
       sheet.collectStyles(
-        <StaticRouter location={c.req.path}>
-          <ClientApp />
-        </StaticRouter>,
+        <SWRConfig value={{ fallback: injectData }}>
+          <StaticRouter location={c.req.path}>
+            <ClientApp />
+          </StaticRouter>,
+        </SWRConfig>
       ),
     );
 
