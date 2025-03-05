@@ -6,7 +6,7 @@ import { zstdFetch as fetch } from './zstdFetch';
 
 // ServiceWorker が負荷で落ちないように並列リクエスト数を制限する
 const queue = new PQueue({
-  concurrency: 5,
+  concurrency: 15,
 });
 
 self.addEventListener('install', (ev: ExtendableEvent) => {
