@@ -5,7 +5,11 @@ import { SWRConfig } from 'swr';
 import { AdminApp } from '@wsh-2024/admin/src/index';
 import { ClientApp } from '@wsh-2024/app/src/index';
 
+import { registerServiceWorker } from './utils/registerServiceWorker';
+
 const main = async () => {
+  await registerServiceWorker();
+
   const fn = () => {
     const root = document.getElementById('root');
     if (!root) throw new Error('Root element not found');
