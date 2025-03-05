@@ -7,8 +7,10 @@ import { useEpisode } from '../../episode/hooks/useEpisode';
 
 import { ComicViewerPage } from './ComicViewerPage';
 
-const IMAGE_WIDTH = 1075;
-const IMAGE_HEIGHT = 1518;
+// const IMAGE_WIDTH = 1075;
+// const IMAGE_HEIGHT = 1518;
+const IMAGE_WIDTH = 600;
+const IMAGE_HEIGHT = 850;
 
 /** スクロールスナップで適切な位置になるための X 軸の移動距離を計算する */
 function getScrollToLeft({

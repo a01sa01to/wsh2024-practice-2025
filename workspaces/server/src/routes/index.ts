@@ -1,8 +1,12 @@
+import path from 'node:path';
+
+import { serveStatic } from '@hono/node-server/serve-static';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { HTTPException } from 'hono/http-exception';
 import { secureHeaders } from 'hono/secure-headers';
 
+import { IMG_STATIC_PATH } from '../constants/paths';
 import { cacheControlMiddleware } from '../middlewares/cacheControlMiddleware';
 import { compressMiddleware } from '../middlewares/compressMiddleware';
 
@@ -26,6 +30,17 @@ app.use(
 );
 app.use(compressMiddleware);
 app.use(cacheControlMiddleware);
+
+app.use(
+  '/img/*',
+  (c, next) => {
+    if (c.req.path.endsWith('jxl')) c.header('Content-Type', 'image/jxl');
+    return next();
+  },
+  serveStatic({
+    root: path.relative(process.cwd(), IMG_STATIC_PATH.replaceAll('\\', '/').replace('/img', '')),
+  }),
+);
 
 app.get('/healthz', (c) => {
   return c.body('live', 200);
