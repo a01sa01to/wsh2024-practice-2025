@@ -2,12 +2,13 @@ import fs from 'node:fs/promises';
 
 import { Hono } from 'hono';
 import { HTTPException } from 'hono/http-exception';
-// import jsesc from 'jsesc';
+import jsesc from 'jsesc';
 import ReactDOMServer from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom/server';
 import { ServerStyleSheet } from 'styled-components';
-import { unstable_serialize, SWRConfig } from 'swr';
+import { SWRConfig, unstable_serialize } from 'swr';
 
+import { bookApiClient } from '@wsh-2024/app/src/features/book/apiClient/bookApiClient';
 import { featureApiClient } from '@wsh-2024/app/src/features/feature/apiClient/featureApiClient';
 import { rankingApiClient } from '@wsh-2024/app/src/features/ranking/apiClient/rankingApiClient';
 import { releaseApiClient } from '@wsh-2024/app/src/features/release/apiClient/releaseApiClient';
@@ -15,7 +16,6 @@ import { ClientApp } from '@wsh-2024/app/src/index';
 import { getDayOfWeekStr } from '@wsh-2024/app/src/lib/date/getDayOfWeekStr';
 
 import { INDEX_HTML_PATH } from '../../constants/paths';
-import { bookApiClient } from '@wsh-2024/app/src/features/book/apiClient/bookApiClient';
 
 const app = new Hono();
 
@@ -40,7 +40,7 @@ async function createInjectDataStr(path: string): Promise<Record<string, unknown
 
 async function createHTML({
   body,
-  // injectData,
+  injectData,
   styleTags,
 }: {
   body: string;
@@ -51,7 +51,17 @@ async function createHTML({
 
   const content = htmlContent
     .replaceAll('<div id="root"></div>', `<div id="root">${body}</div>`)
-    .replaceAll('<style id="tag"></style>', styleTags);
+    .replaceAll('<style id="tag"></style>', styleTags)
+    .replaceAll(
+      '<script id="inject-data" type="application/json"></script>',
+      `<script id="inject-data" type="application/json">
+        ${jsesc(injectData, {
+        isScriptContext: true,
+        json: true,
+        minimal: true,
+      })}
+      </script>`,
+    );
 
   return content;
 }

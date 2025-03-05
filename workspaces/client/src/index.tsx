@@ -13,12 +13,13 @@ const main = async () => {
   const fn = () => {
     const root = document.getElementById('root');
     if (!root) throw new Error('Root element not found');
+    const injectData = JSON.parse(document.getElementById('inject-data')?.textContent ?? '{}');
     if (window.location.pathname.startsWith('/admin')) {
       ReactDOM.createRoot(root).render(<AdminApp />);
     } else {
       ReactDOM.hydrateRoot(
         root,
-        <SWRConfig value={{ revalidateIfStale: false, revalidateOnFocus: false, revalidateOnReconnect: false }}>
+        <SWRConfig value={{ fallback: injectData, provider: () => new Map(), revalidateIfStale: false, revalidateOnFocus: false, revalidateOnReconnect: false }}>
           <BrowserRouter>
             <ClientApp />
           </BrowserRouter>
