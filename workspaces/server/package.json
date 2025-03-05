@@ -16,6 +16,7 @@
     "@hono/zod-validator": "0.2.0",
     "@node-kit/pnpm-workspace-root": "3.2.0",
     "@oneidentity/zstd-js": "1.0.3",
+    "@wsh-2024/admin": "workspace:*",
     "@wsh-2024/app": "workspace:*",
     "@wsh-2024/image-encrypt": "workspace:*",
     "@wsh-2024/schema": "workspace:*",

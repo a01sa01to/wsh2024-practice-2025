@@ -10,7 +10,10 @@ const main = async () => {
   const fn = () => {
     const root = document.getElementById('root');
     if (!root) throw new Error('Root element not found');
-    ReactDOM.createRoot(root).render(<AdminApp />);
+    ReactDOM.hydrateRoot(
+      root,
+      <AdminApp />
+    );
   };
 
   if (document.readyState === 'loading') {

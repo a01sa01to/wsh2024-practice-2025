@@ -10,7 +10,6 @@ import { IMG_STATIC_PATH } from '../constants/paths';
 import { cacheControlMiddleware } from '../middlewares/cacheControlMiddleware';
 import { compressMiddleware } from '../middlewares/compressMiddleware';
 
-import { adminApp } from './admin';
 import { apiApp } from './api';
 import { ssrApp } from './ssr';
 import { staticApp } from './static';
@@ -46,7 +45,6 @@ app.get('/healthz', (c) => {
 });
 app.route('/', staticApp);
 app.route('/', apiApp);
-app.route('/', adminApp);
 app.route('/', ssrApp);
 
 app.onError((cause) => {

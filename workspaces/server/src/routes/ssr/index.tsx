@@ -8,6 +8,7 @@ import { StaticRouter } from 'react-router-dom/server';
 import { ServerStyleSheet } from 'styled-components';
 import { SWRConfig, unstable_serialize } from 'swr';
 
+import { AdminApp } from "@wsh-2024/admin/src/index"
 import { authorApiClient } from '@wsh-2024/app/src/features/author/apiClient/authorApiClient';
 import { bookApiClient } from '@wsh-2024/app/src/features/book/apiClient/bookApiClient';
 import { featureApiClient } from '@wsh-2024/app/src/features/feature/apiClient/featureApiClient';
@@ -69,26 +70,28 @@ async function createInjectDataStr(path: string): Promise<Record<string, unknown
 async function createHTML({
   body,
   injectData,
+  isAdmin,
   styleTags,
 }: {
   body: string;
   injectData: Record<string, unknown>;
+  isAdmin: boolean;
   styleTags: string;
 }): Promise<string> {
   const htmlContent = await fs.readFile(INDEX_HTML_PATH, 'utf-8');
 
   const content = htmlContent
-    .replaceAll('client.global.js', 'app.global.js')
+    .replaceAll('client.global.js', isAdmin ? "admin.global.js" : 'app.global.js')
     .replaceAll('<div id="root"></div>', `<div id="root">${body}</div>`)
     .replaceAll('<style id="tag"></style>', styleTags)
     .replaceAll(
       '<script id="inject-data" type="application/json"></script>',
       `<script id="inject-data" type="application/json">
         ${jsesc(injectData, {
-          isScriptContext: true,
-          json: true,
-          minimal: true,
-        })}
+        isScriptContext: true,
+        json: true,
+        minimal: true,
+      })}
       </script>`,
     );
 
@@ -98,13 +101,16 @@ async function createHTML({
 app.get('*', async (c) => {
   const injectData = await createInjectDataStr(c.req.path);
   const sheet = new ServerStyleSheet();
+  const isAdmin = c.req.path.startsWith('/admin');
 
   try {
     const body = ReactDOMServer.renderToString(
       sheet.collectStyles(
         <SWRConfig value={{ fallback: injectData }}>
           <StaticRouter location={c.req.path}>
-            <ClientApp />
+            {
+              isAdmin ? <AdminApp /> : <ClientApp />
+            }
           </StaticRouter>
           ,
         </SWRConfig>,
@@ -112,7 +118,7 @@ app.get('*', async (c) => {
     );
 
     const styleTags = sheet.getStyleTags();
-    const html = await createHTML({ body, injectData, styleTags });
+    const html = await createHTML({ body, injectData, isAdmin, styleTags });
 
     return c.html(html);
   } catch (cause) {
