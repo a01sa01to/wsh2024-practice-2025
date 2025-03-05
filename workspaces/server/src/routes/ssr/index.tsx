@@ -8,6 +8,7 @@ import { StaticRouter } from 'react-router-dom/server';
 import { ServerStyleSheet } from 'styled-components';
 import { SWRConfig, unstable_serialize } from 'swr';
 
+import { authorApiClient } from '@wsh-2024/app/src/features/author/apiClient/authorApiClient';
 import { bookApiClient } from '@wsh-2024/app/src/features/book/apiClient/bookApiClient';
 import { featureApiClient } from '@wsh-2024/app/src/features/feature/apiClient/featureApiClient';
 import { rankingApiClient } from '@wsh-2024/app/src/features/ranking/apiClient/rankingApiClient';
@@ -16,7 +17,6 @@ import { ClientApp } from '@wsh-2024/app/src/index';
 import { getDayOfWeekStr } from '@wsh-2024/app/src/lib/date/getDayOfWeekStr';
 
 import { INDEX_HTML_PATH } from '../../constants/paths';
-import { authorApiClient } from '@wsh-2024/app/src/features/author/apiClient/authorApiClient';
 
 const app = new Hono();
 
@@ -42,20 +42,23 @@ async function createInjectDataStr(path: string): Promise<Record<string, unknown
     json[unstable_serialize(bookApiClient.fetchList$$key({ query: {} }))] = bookList;
   }
 
-  if (/^\/books\/[^/]+$/.test(path)) { // book detail
-    const bookId = path.split('/').pop() ?? "";
+  if (/^\/books\/[^/]+$/.test(path)) {
+    // book detail
+    const bookId = path.split('/').pop() ?? '';
     const book = await bookApiClient.fetch({ params: { bookId } });
     json[unstable_serialize(bookApiClient.fetch$$key({ params: { bookId } }))] = book;
   }
 
-  if (/^\/books\/[^/]+\/episodes\/[^/]+$/.test(path)) { // episode detail
-    const bookId = path.split('/')[2] ?? "";
+  if (/^\/books\/[^/]+\/episodes\/[^/]+$/.test(path)) {
+    // episode detail
+    const bookId = path.split('/')[2] ?? '';
     const book = await bookApiClient.fetch({ params: { bookId } });
     json[unstable_serialize(bookApiClient.fetch$$key({ params: { bookId } }))] = book;
   }
 
-  if (/^\/authors\/[^/]+$/.test(path)) { // author detail
-    const authorId = path.split('/').pop() ?? "";
+  if (/^\/authors\/[^/]+$/.test(path)) {
+    // author detail
+    const authorId = path.split('/').pop() ?? '';
     const author = await authorApiClient.fetch({ params: { authorId } });
     json[unstable_serialize(authorApiClient.fetch$$key({ params: { authorId } }))] = author;
   }
@@ -81,10 +84,10 @@ async function createHTML({
       '<script id="inject-data" type="application/json"></script>',
       `<script id="inject-data" type="application/json">
         ${jsesc(injectData, {
-        isScriptContext: true,
-        json: true,
-        minimal: true,
-      })}
+          isScriptContext: true,
+          json: true,
+          minimal: true,
+        })}
       </script>`,
     );
 
@@ -101,8 +104,9 @@ app.get('*', async (c) => {
         <SWRConfig value={{ fallback: injectData }}>
           <StaticRouter location={c.req.path}>
             <ClientApp />
-          </StaticRouter>,
-        </SWRConfig>
+          </StaticRouter>
+          ,
+        </SWRConfig>,
       ),
     );
 

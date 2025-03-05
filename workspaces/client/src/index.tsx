@@ -19,7 +19,15 @@ const main = async () => {
     } else {
       ReactDOM.hydrateRoot(
         root,
-        <SWRConfig value={{ fallback: injectData, provider: () => new Map(), revalidateIfStale: false, revalidateOnFocus: false, revalidateOnReconnect: false }}>
+        <SWRConfig
+          value={{
+            fallback: injectData,
+            provider: () => new Map(),
+            revalidateIfStale: false,
+            revalidateOnFocus: false,
+            revalidateOnReconnect: false,
+          }}
+        >
           <BrowserRouter>
             <ClientApp />
           </BrowserRouter>

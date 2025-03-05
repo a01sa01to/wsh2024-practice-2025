@@ -23,7 +23,6 @@ import { useFormik } from 'formik';
 import { useEffect, useRef, useState } from 'react';
 import * as yup from 'yup';
 
-import { encrypt } from '@wsh-2024/image-encrypt/src/encdec';
 import type { GetEpisodeResponse } from '@wsh-2024/schema/src/api/episodes/GetEpisodeResponse';
 
 import { getImageUrl } from '../../../lib/image/getImageUrl';
