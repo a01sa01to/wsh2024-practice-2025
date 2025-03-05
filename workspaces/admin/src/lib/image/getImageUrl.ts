@@ -16,11 +16,5 @@ export function getImageUrl({ format, height, imageId, width }: Params): string 
   //   url.searchParams.set('height', `${height}`);
   // }
   const url = new URL(`/img/${imageId}-${width}x${height}.${format}`, location.href);
-
-  if (format === 'jxl') {
-    url.pathname = `/images/${imageId}`;
-    url.search = 'format=jxl';
-  }
-
   return url.href;
 }

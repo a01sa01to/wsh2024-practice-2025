@@ -4,6 +4,7 @@ import path from 'node:path';
 import { createRoute, OpenAPIHono } from '@hono/zod-openapi';
 import sharp from 'sharp';
 
+import { encrypt } from '@wsh-2024/image-encrypt/src/encdec';
 import { PostImageRequestBodySchema } from '@wsh-2024/schema/src/api/images/PostImageRequestBody';
 import { PostImageResponseSchema } from '@wsh-2024/schema/src/api/images/PostImageResponse';
 
@@ -81,11 +82,19 @@ app.openapi(route, async (c) => {
         Buffer.from(
           await sharp(Buffer.from(await formData.content.arrayBuffer()))
             .resize(width, height)
-            .avif({ effort: 9, quality: 80 })
+            .avif({ effort: 3, quality: 80 })
             .toBuffer(),
         ),
       );
     }),
+    (async () => {
+      const buf = await sharp(Buffer.from(await formData.content.arrayBuffer()))
+        .resize(600, 850)
+        .avif({ effort: 3, quality: 80 })
+        .toBuffer();
+      const enc = encrypt(new Uint8Array(buf));
+      await fs.writeFile(path.resolve(IMG_STATIC_PATH, `./${result.value.id}-600x850.avif`), Buffer.from(enc));
+    })(),
   ]);
 
   return c.json(result.value);

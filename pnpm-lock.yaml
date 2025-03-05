@@ -211,7 +211,7 @@ importers:
         version: 5.0.0
       tsup:
         specifier: 8.0.1
-        version: 8.0.1
+        version: 8.0.1(typescript@5.4.2)
 
   workspaces/image-encrypt:
     devDependencies:
@@ -284,6 +284,9 @@ importers:
       '@wsh-2024/app':
         specifier: workspace:*
         version: link:../app
+      '@wsh-2024/image-encrypt':
+        specifier: workspace:*
+        version: link:../image-encrypt
       '@wsh-2024/schema':
         specifier: workspace:*
         version: link:../schema
@@ -374,7 +377,7 @@ importers:
         version: 0.20.9
       tsup:
         specifier: 8.0.1
-        version: 8.0.1
+        version: 8.0.1(typescript@5.4.2)
 
   workspaces/testing:
     devDependencies:
@@ -8673,7 +8676,7 @@ packages:
   /tslib@2.6.2:
     resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
 
-  /tsup@8.0.1:
+  /tsup@8.0.1(typescript@5.4.2):
     resolution: {integrity: sha512-hvW7gUSG96j53ZTSlT4j/KL0q1Q2l6TqGBFc6/mu/L46IoNWqLLUzLRLP1R8Q7xrJTmkDxxDoojV5uCVs1sVOg==}
     engines: {node: '>=18'}
     hasBin: true
@@ -8706,6 +8709,7 @@ packages:
       source-map: 0.8.0-beta.0
       sucrase: 3.35.0
       tree-kill: 1.2.2
+      typescript: 5.4.2
     transitivePeerDependencies:
       - supports-color
       - ts-node
