@@ -78,6 +78,7 @@ async function createHTML({
   const htmlContent = await fs.readFile(INDEX_HTML_PATH, 'utf-8');
 
   const content = htmlContent
+    .replaceAll('client.global.js', 'app.global.js')
     .replaceAll('<div id="root"></div>', `<div id="root">${body}</div>`)
     .replaceAll('<style id="tag"></style>', styleTags)
     .replaceAll(
