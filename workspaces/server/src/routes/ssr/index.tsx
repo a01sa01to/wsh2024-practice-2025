@@ -16,6 +16,7 @@ import { ClientApp } from '@wsh-2024/app/src/index';
 import { getDayOfWeekStr } from '@wsh-2024/app/src/lib/date/getDayOfWeekStr';
 
 import { INDEX_HTML_PATH } from '../../constants/paths';
+import { authorApiClient } from '@wsh-2024/app/src/features/author/apiClient/authorApiClient';
 
 const app = new Hono();
 
@@ -33,6 +34,30 @@ async function createInjectDataStr(path: string): Promise<Record<string, unknown
 
     const ranking = await rankingApiClient.fetchList({ query: {} });
     json[unstable_serialize(rankingApiClient.fetchList$$key({ query: {} }))] = ranking;
+  }
+
+  if (path === '/search') {
+    // bookList
+    const bookList = await bookApiClient.fetchList({ query: {} });
+    json[unstable_serialize(bookApiClient.fetchList$$key({ query: {} }))] = bookList;
+  }
+
+  if (/^\/books\/[^/]+$/.test(path)) { // book detail
+    const bookId = path.split('/').pop() ?? "";
+    const book = await bookApiClient.fetch({ params: { bookId } });
+    json[unstable_serialize(bookApiClient.fetch$$key({ params: { bookId } }))] = book;
+  }
+
+  if (/^\/books\/[^/]+\/episodes\/[^/]+$/.test(path)) { // episode detail
+    const bookId = path.split('/')[2] ?? "";
+    const book = await bookApiClient.fetch({ params: { bookId } });
+    json[unstable_serialize(bookApiClient.fetch$$key({ params: { bookId } }))] = book;
+  }
+
+  if (/^\/authors\/[^/]+$/.test(path)) { // author detail
+    const authorId = path.split('/').pop() ?? "";
+    const author = await authorApiClient.fetch({ params: { authorId } });
+    json[unstable_serialize(authorApiClient.fetch$$key({ params: { authorId } }))] = author;
   }
 
   return json;
