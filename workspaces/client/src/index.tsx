@@ -18,7 +18,7 @@ const main = async () => {
     } else {
       ReactDOM.hydrateRoot(
         root,
-        <SWRConfig value={{ revalidateIfStale: true, revalidateOnFocus: false, revalidateOnReconnect: false }}>
+        <SWRConfig value={{ revalidateIfStale: false, revalidateOnFocus: false, revalidateOnReconnect: false }}>
           <BrowserRouter>
             <ClientApp />
           </BrowserRouter>
