@@ -16,7 +16,6 @@ export default defineConfig(async (): Promise<Options[]> => {
       clean: true,
       entry: {
         client: path.resolve(PACKAGE_DIR, './src/index.tsx'),
-        serviceworker: path.resolve(PACKAGE_DIR, './src/serviceworker/index.ts'),
       },
       env: {
         API_URL: '',
@@ -42,10 +41,6 @@ export default defineConfig(async (): Promise<Options[]> => {
         }),
       ],
       format: 'iife',
-      loader: {
-        '.json?file': 'file',
-        '.wasm': 'binary',
-      },
       metafile: true,
       outDir: OUTPUT_DIR,
       platform: 'browser',
