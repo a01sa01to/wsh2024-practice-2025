@@ -3,7 +3,7 @@ import type { z } from 'zod';
 
 import { author, book, image, release } from '../../models';
 
-export const GetReleaseResponseSchema = createSelectSchema(release).extend({
+export const GetReleaseResponseSchema = createSelectSchema(release).pick({}).extend({
   books: createSelectSchema(book)
     .pick({
       id: true,
