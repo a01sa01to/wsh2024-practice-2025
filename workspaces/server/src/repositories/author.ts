@@ -50,19 +50,11 @@ class AuthorRepository implements AuthorRepositoryInterface {
               description: true,
               id: true,
               name: true,
+              nameRuby: true,
             },
             with: {
-              episodes: {
-                columns: {
-                  chapter: true,
-                  description: true,
-                  id: true,
-                  name: true,
-                },
-              },
               image: {
                 columns: {
-                  alt: true,
                   id: true,
                 },
               },
@@ -70,7 +62,6 @@ class AuthorRepository implements AuthorRepositoryInterface {
           },
           image: {
             columns: {
-              alt: true,
               id: true,
             },
           },
