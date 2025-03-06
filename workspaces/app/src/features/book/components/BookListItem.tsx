@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import type { GetAuthorResponse } from '@wsh-2024/schema/src/api/authors/GetAuthorResponse';
+import type { GetBookListResponse } from '@wsh-2024/schema/src/api/books/GetBookListResponse';
 
 import { Box } from '../../../foundation/components/Box';
 import { Flex } from '../../../foundation/components/Flex';
@@ -29,7 +29,7 @@ const _ImgWrapper = styled.div`
 `;
 
 type Props = {
-  book: GetAuthorResponse['books'][0];
+  book: GetBookListResponse[0];
 };
 
 export const BookListItem: React.FC<Props> = ({ book }) => {
