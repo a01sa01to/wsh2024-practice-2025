@@ -1,7 +1,7 @@
 import { Suspense, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { useEpisode } from '../../episode/hooks/useEpisode';
+import type { GetEpisodeListResponse } from '@wsh-2024/schema/src/api/episodes/GetEpisodeListResponse';
 
 import { ComicViewerPage } from './ComicViewerPage';
 
@@ -28,11 +28,11 @@ function getScrollToLeft({ scrollView }: { scrollView: HTMLDivElement }) {
     const scrollMargin =
       pageCountParView === 2
         ? {
-            // 奇数ページのときは左側に1ページ分の幅を追加する
-            left: nthChild % 2 === 0 ? pageWidth : 0,
-            // 偶数ページのときは右側に1ページ分の幅を追加する
-            right: nthChild % 2 === 1 ? pageWidth : 0,
-          }
+          // 奇数ページのときは左側に1ページ分の幅を追加する
+          left: nthChild % 2 === 0 ? pageWidth : 0,
+          // 偶数ページのときは右側に1ページ分の幅を追加する
+          right: nthChild % 2 === 1 ? pageWidth : 0,
+        }
         : { left: 0, right: 0 };
 
     // scroll-margin の分だけ広げた範囲を計算する
@@ -96,12 +96,10 @@ const _Wrapper = styled.div`
 `;
 
 type Props = {
-  episodeId: string;
+  episode: GetEpisodeListResponse[0];
 };
 
-const ComicViewerCore: React.FC<Props> = ({ episodeId }) => {
-  const { data: episode } = useEpisode({ params: { episodeId } });
-
+const ComicViewerCore: React.FC<Props> = ({ episode }) => {
   const [scrollView, scrollViewRef] = useState<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -170,10 +168,10 @@ const ComicViewerCore: React.FC<Props> = ({ episodeId }) => {
   );
 };
 
-const ComicViewerCoreWithSuspense: React.FC<Props> = ({ episodeId }) => {
+const ComicViewerCoreWithSuspense: React.FC<Props> = ({ episode }) => {
   return (
     <Suspense fallback={null}>
-      <ComicViewerCore episodeId={episodeId} />
+      <ComicViewerCore episode={episode} />
     </Suspense>
   );
 };

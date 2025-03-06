@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import type { GetEpisodeListResponse } from '@wsh-2024/schema/src/api/episodes/GetEpisodeListResponse';
+
 import { ComicViewerCore } from '../../../features/viewer/components/ComicViewerCore';
 
 const _Container = styled.div`
@@ -22,14 +24,14 @@ const _Wrapper = styled.div`
 `;
 
 type Props = {
-  episodeId: string;
+  episode: GetEpisodeListResponse[0];
 };
 
-export const ComicViewer: React.FC<Props> = ({ episodeId }) => {
+export const ComicViewer: React.FC<Props> = ({ episode }) => {
   return (
     <_Container>
       <_Wrapper>
-        <ComicViewerCore episodeId={episodeId} />
+        <ComicViewerCore episode={episode} />
       </_Wrapper>
     </_Container>
   );
