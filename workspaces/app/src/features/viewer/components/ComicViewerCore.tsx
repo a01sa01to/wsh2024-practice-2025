@@ -28,11 +28,11 @@ function getScrollToLeft({ scrollView }: { scrollView: HTMLDivElement }) {
     const scrollMargin =
       pageCountParView === 2
         ? {
-          // 奇数ページのときは左側に1ページ分の幅を追加する
-          left: nthChild % 2 === 0 ? pageWidth : 0,
-          // 偶数ページのときは右側に1ページ分の幅を追加する
-          right: nthChild % 2 === 1 ? pageWidth : 0,
-        }
+            // 奇数ページのときは左側に1ページ分の幅を追加する
+            left: nthChild % 2 === 0 ? pageWidth : 0,
+            // 偶数ページのときは右側に1ページ分の幅を追加する
+            right: nthChild % 2 === 1 ? pageWidth : 0,
+          }
         : { left: 0, right: 0 };
 
     // scroll-margin の分だけ広げた範囲を計算する
