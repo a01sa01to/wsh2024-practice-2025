@@ -35,42 +35,26 @@ class ReleaseRepository implements ReleaseRepositoryInterface {
   async read(options: { params: GetReleaseRequestParams }): Promise<Result<GetReleaseResponse, HTTPException>> {
     try {
       const data = await getDatabase().query.release.findFirst({
-        columns: {
-          dayOfWeek: true,
-          id: true,
-        },
         where(release, { eq }) {
           return eq(release.dayOfWeek, options.params.dayOfWeek);
         },
         with: {
           books: {
             columns: {
-              description: true,
               id: true,
               name: true,
             },
             with: {
               author: {
                 columns: {
-                  description: true,
-                  id: true,
                   name: true,
                 },
                 with: {
                   image: {
                     columns: {
-                      alt: true,
                       id: true,
                     },
                   },
-                },
-              },
-              episodes: {
-                columns: {
-                  chapter: true,
-                  description: true,
-                  id: true,
-                  name: true,
                 },
               },
               image: {

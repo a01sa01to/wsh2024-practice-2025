@@ -19,7 +19,6 @@ class RankingRepository implements RankingRepositoryInterface {
       const data = await getDatabase().query.ranking.findMany({
         columns: {
           id: true,
-          rank: true,
         },
         limit: options.query.limit,
         offset: options.query.offset,
@@ -36,30 +35,18 @@ class RankingRepository implements RankingRepositoryInterface {
             with: {
               author: {
                 columns: {
-                  description: true,
-                  id: true,
                   name: true,
                 },
                 with: {
                   image: {
                     columns: {
-                      alt: true,
                       id: true,
                     },
                   },
                 },
               },
-              episodes: {
-                columns: {
-                  chapter: true,
-                  description: true,
-                  id: true,
-                  name: true,
-                },
-              },
               image: {
                 columns: {
-                  alt: true,
                   id: true,
                 },
               },
