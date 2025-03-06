@@ -41,11 +41,11 @@ async function createInjectDataStr(path: string): Promise<Record<string, unknown
     if (e.isOk()) json[unstable_serialize({ query: {}, requestUrl: `/api/v1/rankings` })] = e.value;
   }
 
-  if (path === '/search') {
-    const c = await bookRepository.readAll({ query: {} });
-    // bookList
-    if (c.isOk()) json[unstable_serialize({ query: {}, requestUrl: `/api/v1/books` })] = c.value;
-  }
+  // if (path === '/search') {
+  //   const c = await bookRepository.readAll({ query: {} });
+  //   // bookList
+  //   if (c.isOk()) json[unstable_serialize({ query: {}, requestUrl: `/api/v1/books` })] = c.value;
+  // }
 
   if (/^\/books\/[^/]+$/.test(path)) {
     // book detail
@@ -92,10 +92,10 @@ async function createHTML({
       '<script id="inject-data" type="application/json"></script>',
       `<script id="inject-data" type="application/json">
         ${jsesc(injectData, {
-        isScriptContext: true,
-        json: true,
-        minimal: true,
-      })}
+          isScriptContext: true,
+          json: true,
+          minimal: true,
+        })}
       </script>`,
     );
 
