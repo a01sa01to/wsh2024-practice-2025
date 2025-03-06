@@ -16,6 +16,7 @@ import { INDEX_HTML_PATH } from '../../constants/paths';
 import {
   authorRepository,
   bookRepository,
+  episodeRepository,
   featureRepository,
   rankingRepository,
   releaseRepository,
@@ -56,8 +57,8 @@ async function createInjectDataStr(path: string): Promise<Record<string, unknown
   if (/^\/books\/[^/]+\/episodes\/[^/]+$/.test(path)) {
     // episode detail
     const bookId = path.split('/')[2] ?? '';
-    const c = await bookRepository.read({ params: { bookId } });
-    if (c.isOk()) json[unstable_serialize({ params: { bookId }, requestUrl: `/api/v1/books/:bookId` })] = c.value;
+    const c = await episodeRepository.readAll({ query: { bookId } });
+    if (c.isOk()) json[unstable_serialize({ query: { bookId }, requestUrl: `/api/v1/episodes` })] = c.value;
   }
 
   if (/^\/authors\/[^/]+$/.test(path)) {
@@ -91,10 +92,10 @@ async function createHTML({
       '<script id="inject-data" type="application/json"></script>',
       `<script id="inject-data" type="application/json">
         ${jsesc(injectData, {
-          isScriptContext: true,
-          json: true,
-          minimal: true,
-        })}
+        isScriptContext: true,
+        json: true,
+        minimal: true,
+      })}
       </script>`,
     );
 
