@@ -148,11 +148,7 @@ class BookRepository implements BookRepositoryInterface {
       if (result[0] == null) {
         throw new HTTPException(500, { message: 'Failed to create book.' });
       }
-      return this.read({
-        params: {
-          bookId: result[0].bookId,
-        },
-      });
+      return ok({});
     } catch (cause) {
       if (cause instanceof HTTPException) {
         return err(cause);
@@ -176,11 +172,7 @@ class BookRepository implements BookRepositoryInterface {
       if (result[0] == null) {
         throw new HTTPException(500, { message: `Failed to update book:${options.params.bookId}.` });
       }
-      return this.read({
-        params: {
-          bookId: result[0].bookId,
-        },
-      });
+      return ok({});
     } catch (cause) {
       if (cause instanceof HTTPException) {
         return err(cause);
