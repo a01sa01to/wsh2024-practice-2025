@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@hapi/accept": "6.0.3",
-    "@hono/node-server": "1.8.2",
+    "@hono/node-server": "1.10.1",
     "@hono/swagger-ui": "0.2.1",
     "@hono/zod-openapi": "0.9.8",
     "@hono/zod-validator": "0.2.0",
@@ -26,7 +26,7 @@
     "drizzle-orm": "0.29.3",
     "file-type": "19.0.0",
     "globby": "14.0.1",
-    "hono": "4.1.0",
+    "hono": "4.6.5",
     "image-js": "0.35.5",
     "jsdom": "24.0.0",
     "jsesc": "3.0.2",
