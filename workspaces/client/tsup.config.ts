@@ -1,6 +1,5 @@
 import path from 'node:path';
 
-import { polyfillNode } from 'esbuild-plugin-polyfill-node';
 import findPackageDir from 'pkg-dir';
 import { defineConfig } from 'tsup';
 import type { Options } from 'tsup';
@@ -30,18 +29,6 @@ export default defineConfig(async (): Promise<Options[]> => {
         };
         options.publicPath = '/';
       },
-      esbuildPlugins: [
-        polyfillNode({
-          globals: {
-            process: false,
-          },
-          polyfills: {
-            events: true,
-            fs: true,
-            path: true,
-          },
-        }),
-      ],
       format: 'iife',
       metafile: true,
       outDir: OUTPUT_DIR,

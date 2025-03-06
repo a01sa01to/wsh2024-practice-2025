@@ -43,6 +43,13 @@ app.use(route.getRoutingPath(), authMiddleware);
 app.openapi(route, async (c) => {
   const formData = c.req.valid('form');
 
+  const SUPPORTED_MIME_TYPE_LIST = ['image/bmp', 'image/jpeg', 'image/png', 'image/webp', 'image/avif', 'image/jxl'];
+  const { fileTypeFromBuffer } = await import('file-type');
+  const filetype = await fileTypeFromBuffer(await formData.content.arrayBuffer());
+  if (!SUPPORTED_MIME_TYPE_LIST.includes(filetype?.mime ?? '')) {
+    throw new Error('Unsupported file type');
+  }
+
   const result = await imageRepository.create({
     body: {
       alt: formData.alt,
