@@ -18,7 +18,7 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
-import { useId, useMemo, useState } from 'react';
+import { useEffect, useId, useMemo, useState } from 'react';
 import { create } from 'zustand';
 
 import { useBookList } from '../../features/books/hooks/useBookList';
@@ -74,29 +74,39 @@ export const BookListPage: React.FC = () => {
     onSubmit() {},
   });
 
+  const [debouncedQuery, setDebouncedQuery] = useState(formik.values.query);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedQuery(formik.values.query);
+    }, 500);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [formik.values.query]);
+
   const filteredBookList = useMemo(() => {
-    if (formik.values.query === '') {
+    if (debouncedQuery === '') {
       return bookList;
     }
 
     switch (formik.values.kind) {
       case BookSearchKind.BookId: {
-        return bookList.filter((book) => book.id === formik.values.query);
+        return bookList.filter((book) => book.id === debouncedQuery);
       }
       case BookSearchKind.BookName: {
         return bookList.filter((book) => {
           return (
-            isContains({ query: formik.values.query, target: book.name }) ||
-            isContains({ query: formik.values.query, target: book.nameRuby })
+            isContains({ query: debouncedQuery, target: book.name }) ||
+            isContains({ query: debouncedQuery, target: book.nameRuby })
           );
         });
       }
       case BookSearchKind.AuthorId: {
-        return bookList.filter((book) => book.author.id === formik.values.query);
+        return bookList.filter((book) => book.author.id === debouncedQuery);
       }
       case BookSearchKind.AuthorName: {
         return bookList.filter((book) => {
-          return isContains({ query: formik.values.query, target: book.author.name });
+          return isContains({ query: debouncedQuery, target: book.author.name });
         });
       }
       default: {
@@ -104,7 +114,7 @@ export const BookListPage: React.FC = () => {
         return bookList;
       }
     }
-  }, [formik.values.kind, formik.values.query, bookList]);
+  }, [formik.values.kind, debouncedQuery, bookList]);
 
   const [useModalStore] = useState(() => {
     return create<BookModalState & BookModalAction>()((set) => ({

@@ -18,7 +18,7 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
-import { useId, useMemo, useState } from 'react';
+import { useEffect, useId, useMemo, useState } from 'react';
 import { create } from 'zustand';
 
 import { useAuthorList } from '../../features/authors/hooks/useAuthorList';
@@ -72,18 +72,28 @@ export const AuthorListPage: React.FC = () => {
     onSubmit() {},
   });
 
+  const [debouncedQuery, setDebouncedQuery] = useState(formik.values.query);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedQuery(formik.values.query);
+    }, 500);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [formik.values.query]);
+
   const filteredAuthorList = useMemo(() => {
-    if (formik.values.query === '') {
+    if (debouncedQuery === '') {
       return authorList;
     }
 
     switch (formik.values.kind) {
       case AuthorSearchKind.AuthorId: {
-        return authorList.filter((author) => author.id === formik.values.query);
+        return authorList.filter((author) => author.id === debouncedQuery);
       }
       case AuthorSearchKind.AuthorName: {
         return authorList.filter((author) => {
-          return isContains({ query: formik.values.query, target: author.name });
+          return isContains({ query: debouncedQuery, target: author.name });
         });
       }
       default: {
@@ -91,7 +101,7 @@ export const AuthorListPage: React.FC = () => {
         return authorList;
       }
     }
-  }, [formik.values.kind, formik.values.query, authorList]);
+  }, [formik.values.kind, debouncedQuery, authorList]);
 
   const [useModalStore] = useState(() => {
     return create<AuthorModalState & AuthorModalAction>()((set) => ({
