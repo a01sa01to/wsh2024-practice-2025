@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises';
 
+import { dehydrate, HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Hono } from 'hono';
 import { HTTPException } from 'hono/http-exception';
 import jsesc from 'jsesc';
@@ -107,12 +108,27 @@ app.get('*', async (c) => {
   const sheet = new ServerStyleSheet();
   const isAdmin = c.req.path.startsWith('/admin');
 
+  const queryClient = new QueryClient();
+  const dehydratedState = dehydrate(queryClient);
+
   try {
     const body = ReactDOMServer.renderToString(
       sheet.collectStyles(
-        <SWRConfig value={{ fallback: injectData }}>
-          <StaticRouter location={c.req.path}>{isAdmin ? <AdminApp /> : <ClientApp />}</StaticRouter>
-        </SWRConfig>,
+        <>
+          {isAdmin ? (
+            <QueryClientProvider client={queryClient}>
+              <HydrationBoundary state={dehydratedState}>
+                <AdminApp />
+              </HydrationBoundary>
+            </QueryClientProvider>
+          ) : (
+            <SWRConfig value={{ fallback: injectData }}>
+              <StaticRouter location={c.req.path}>
+                <ClientApp />
+              </StaticRouter>
+            </SWRConfig>
+          )}
+        </>,
       ),
     );
 

@@ -8,6 +8,7 @@
     "build:tsup": "NODE_ENV=production tsup"
   },
   "dependencies": {
+    "@tanstack/react-query": "5.18.1",
     "@wsh-2024/admin": "workspace:*",
     "@wsh-2024/app": "workspace:*",
     "react": "18.2.0",

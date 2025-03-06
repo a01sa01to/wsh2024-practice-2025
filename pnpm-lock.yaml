@@ -160,6 +160,9 @@ importers:
 
   workspaces/client:
     dependencies:
+      '@tanstack/react-query':
+        specifier: 5.18.1
+        version: 5.18.1(react@18.2.0)
       '@wsh-2024/admin':
         specifier: workspace:*
         version: link:../admin
@@ -239,6 +242,9 @@ importers:
       '@oneidentity/zstd-js':
         specifier: 1.0.3
         version: 1.0.3
+      '@tanstack/react-query':
+        specifier: 5.18.1
+        version: 5.18.1(react@18.2.0)
       '@wsh-2024/admin':
         specifier: workspace:*
         version: link:../admin
