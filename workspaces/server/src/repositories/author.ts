@@ -131,11 +131,7 @@ class AuthorRepository implements AuthorRepositoryInterface {
       if (result[0] == null) {
         throw new HTTPException(500, { message: 'Failed to create author.' });
       }
-      return this.read({
-        params: {
-          authorId: result[0].authorId,
-        },
-      });
+      return ok({});
     } catch (cause) {
       if (cause instanceof HTTPException) {
         return err(cause);
@@ -159,11 +155,7 @@ class AuthorRepository implements AuthorRepositoryInterface {
       if (result[0] == null) {
         throw new HTTPException(500, { message: `Failed to update author:${options.params.authorId}.` });
       }
-      return this.read({
-        params: {
-          authorId: result[0].authorId,
-        },
-      });
+      return ok({});
     } catch (cause) {
       if (cause instanceof HTTPException) {
         return err(cause);
