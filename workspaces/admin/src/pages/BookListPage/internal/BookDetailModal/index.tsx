@@ -19,20 +19,22 @@ import {
 import { Link } from '@tanstack/react-router';
 import { useToggle } from '@uidotdev/usehooks';
 
-import type { GetBookListResponse } from '@wsh-2024/schema/src/api/books/GetBookListResponse';
+import { useBook } from '../../../../features/books/hooks/useBook';
 
 import { BookDetailContent } from './BookDetailContent';
 import { BookEditContent } from './BookEditContent';
 
 type Props = {
-  book?: GetBookListResponse[0];
+  bookId: string;
   isOpen: boolean;
   onClose: () => void;
   refetchBookList: () => void;
 };
 
-export const BookDetailModal: React.FC<Props> = ({ book, isOpen, onClose, refetchBookList }) => {
+export const BookDetailModal: React.FC<Props> = ({ bookId, isOpen, onClose, refetchBookList }) => {
   const [isEdit, toggleIEdit] = useToggle(false);
+
+  const { data: book } = useBook({ bookId });
 
   if (!book) return null;
 

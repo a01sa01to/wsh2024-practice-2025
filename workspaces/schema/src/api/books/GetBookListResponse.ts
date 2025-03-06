@@ -1,7 +1,7 @@
 import { createSelectSchema } from 'drizzle-zod';
 import type { z } from 'zod';
 
-import { book, image } from '../../models';
+import { author, book, image } from '../../models';
 
 export const GetBookListResponseSchema = createSelectSchema(book)
   .pick({
@@ -11,6 +11,10 @@ export const GetBookListResponseSchema = createSelectSchema(book)
     nameRuby: true,
   })
   .extend({
+    author: createSelectSchema(author).pick({
+      id: true,
+      name: true,
+    }),
     image: createSelectSchema(image).pick({
       id: true,
     }),

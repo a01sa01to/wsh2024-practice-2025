@@ -245,7 +245,7 @@ export const BookListPage: React.FC = () => {
       {modalState.mode === BookModalMode.Detail ? (
         <BookDetailModal
           isOpen
-          book={bookList.find((book) => book.id === modalState.params.bookId)}
+          bookId={modalState.params.bookId}
           onClose={() => modalState.close()}
           refetchBookList={refetchBookList}
         />

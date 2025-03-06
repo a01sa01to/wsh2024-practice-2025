@@ -35,7 +35,9 @@ class BookRepository implements BookRepositoryInterface {
       const data = await getDatabase().query.book.findFirst({
         columns: {
           description: true,
+          id: true,
           name: true,
+          nameRuby: true,
         },
         where(book, { eq }) {
           return eq(book.id, options.params.bookId);
@@ -116,6 +118,12 @@ class BookRepository implements BookRepositoryInterface {
           return;
         },
         with: {
+          author: {
+            columns: {
+              id: true,
+              name: true,
+            },
+          },
           image: {
             columns: {
               id: true,
