@@ -2,7 +2,6 @@ import { Suspense, useEffect, useState } from 'react';
 import { useInterval, useUpdate } from 'react-use';
 import styled from 'styled-components';
 
-import { addUnitIfNeeded } from '../../../lib/css/addUnitIfNeeded';
 import { useEpisode } from '../../episode/hooks/useEpisode';
 
 import { ComicViewerPage } from './ComicViewerPage';
@@ -39,11 +38,11 @@ function getScrollToLeft({
       const scrollMargin =
         pageCountParView === 2
           ? {
-              // 奇数ページのときは左側に1ページ分の幅を追加する
-              left: nthChild % 2 === 0 ? pageWidth : 0,
-              // 偶数ページのときは右側に1ページ分の幅を追加する
-              right: nthChild % 2 === 1 ? pageWidth : 0,
-            }
+            // 奇数ページのときは左側に1ページ分の幅を追加する
+            left: nthChild % 2 === 0 ? pageWidth : 0,
+            // 偶数ページのときは右側に1ページ分の幅を追加する
+            right: nthChild % 2 === 1 ? pageWidth : 0,
+          }
           : { left: 0, right: 0 };
 
       // scroll-margin の分だけ広げた範囲を計算する
@@ -72,22 +71,19 @@ const _Container = styled.div`
   position: relative;
 `;
 
-const _Wrapper = styled.div<{
-  $paddingInline: number;
-  $pageWidth: number;
-}>`
+const _Wrapper = styled.div`
   background-color: black;
   cursor: grab;
   direction: rtl;
   display: grid;
-  grid-auto-columns: ${({ $pageWidth }) => addUnitIfNeeded($pageWidth)};
+  grid-auto-columns: var(--manga-page-width);
   grid-auto-flow: column;
   grid-template-rows: minmax(auto, 100%);
   height: 100%;
   overflow-x: scroll;
   overflow-y: hidden;
   overscroll-behavior: none;
-  padding-inline: ${({ $paddingInline }) => addUnitIfNeeded($paddingInline)};
+  padding-inline: calc((min(100vw, 1024px) - var(--manga-page-width) * var(--pagecnt)) / 2 + var(--manga-page-width) * (var(--pagecnt) - 1));
   touch-action: none;
 
   &::-webkit-scrollbar {
@@ -118,11 +114,6 @@ const ComicViewerCore: React.FC<Props> = ({ episodeId }) => {
   const pageCountParView = (100 * cqw) / (100 * cqh) < (2 * IMAGE_WIDTH) / IMAGE_HEIGHT ? 1 : 2;
   // ページの幅
   const pageWidth = ((100 * cqh) / IMAGE_HEIGHT) * IMAGE_WIDTH;
-  // 画面にページを表示したときに余る左右の余白
-  const viewerPaddingInline =
-    (100 * cqw - pageWidth * pageCountParView) / 2 +
-    // 2ページ表示のときは、奇数ページが左側にあるべきなので、ページの最初と最後に1ページの余白をいれる
-    (pageCountParView === 2 ? pageWidth : 0);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -210,7 +201,7 @@ const ComicViewerCore: React.FC<Props> = ({ episodeId }) => {
 
   return (
     <_Container ref={containerRef}>
-      <_Wrapper ref={scrollViewRef} $paddingInline={viewerPaddingInline} $pageWidth={pageWidth}>
+      <_Wrapper ref={scrollViewRef}>
         {episode.pages.map((page) => {
           return <ComicViewerPage key={page.id} pageImageId={page.image.id} />;
         })}
