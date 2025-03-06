@@ -92,10 +92,10 @@ async function createHTML({
       '<script id="inject-data" type="application/json"></script>',
       `<script id="inject-data" type="application/json">
         ${jsesc(injectData, {
-          isScriptContext: true,
-          json: true,
-          minimal: true,
-        })}
+        isScriptContext: true,
+        json: true,
+        minimal: true,
+      })}
       </script>`,
     );
 
@@ -111,7 +111,7 @@ app.get('*', async (c) => {
     const body = ReactDOMServer.renderToString(
       sheet.collectStyles(
         <SWRConfig value={{ fallback: injectData }}>
-          <StaticRouter location={c.req.path}>{isAdmin ? <AdminApp /> : <ClientApp />}</StaticRouter>,
+          <StaticRouter location={c.req.path}>{isAdmin ? <AdminApp /> : <ClientApp />}</StaticRouter>
         </SWRConfig>,
       ),
     );
