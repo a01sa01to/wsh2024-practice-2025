@@ -120,7 +120,6 @@ class EpisodeRepository implements EpisodeRepositoryInterface {
           description: true,
           id: true,
           name: true,
-          nameRuby: true,
         },
         limit: options.query.limit,
         offset: options.query.offset,
@@ -131,52 +130,16 @@ class EpisodeRepository implements EpisodeRepositoryInterface {
           return eq(episode.bookId, options.query.bookId);
         },
         with: {
-          book: {
-            columns: {
-              description: true,
-              id: true,
-              name: true,
-              nameRuby: true,
-            },
-            with: {
-              author: {
-                columns: {
-                  description: true,
-                  id: true,
-                  name: true,
-                },
-                with: {
-                  image: {
-                    columns: {
-                      alt: true,
-                      id: true,
-                    },
-                  },
-                },
-              },
-              image: {
-                columns: {
-                  alt: true,
-                  id: true,
-                },
-              },
-            },
-          },
           image: {
             columns: {
-              alt: true,
               id: true,
             },
           },
           pages: {
-            columns: {
-              id: true,
-              page: true,
-            },
+            columns: {},
             with: {
               image: {
                 columns: {
-                  alt: true,
                   id: true,
                 },
               },
