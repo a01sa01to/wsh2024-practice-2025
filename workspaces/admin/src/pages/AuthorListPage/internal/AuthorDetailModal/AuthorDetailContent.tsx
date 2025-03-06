@@ -1,13 +1,13 @@
 import { Avatar, Box, Button, Flex, Stack, StackItem, Text } from '@chakra-ui/react';
 import { useCallback } from 'react';
 
-import type { GetAuthorResponse } from '@wsh-2024/schema/src/api/authors/GetAuthorResponse';
+import type { GetAuthorListResponse } from '@wsh-2024/schema/src/api/authors/GetAuthorListResponse';
 
 import { useDeleteAuthor } from '../../../../features/authors/hooks/useDeleteAuthor';
 import { getImageUrl } from '../../../../lib/image/getImageUrl';
 
 type AuthorDetailContentProps = {
-  author: GetAuthorResponse;
+  author: GetAuthorListResponse[0];
   onCloseDialog: () => void;
   onEdit: () => void;
 };

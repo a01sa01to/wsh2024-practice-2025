@@ -18,13 +18,13 @@ import { useFormik } from 'formik';
 import { useEffect, useRef, useState } from 'react';
 import * as yup from 'yup';
 
-import type { GetAuthorResponse } from '@wsh-2024/schema/src/api/authors/GetAuthorResponse';
+import type { GetAuthorListResponse } from '@wsh-2024/schema/src/api/authors/GetAuthorListResponse';
 
 import { useUpdateAuthor } from '../../../../features/authors/hooks/useUpdateAuthor';
 import { isSupportedImage } from '../../../../lib/image/isSupportedImage';
 
 type AuthorEditContentProps = {
-  author: GetAuthorResponse;
+  author: GetAuthorListResponse[0];
   onEditComplete: () => void;
 };
 
