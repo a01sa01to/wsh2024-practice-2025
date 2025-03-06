@@ -20,7 +20,7 @@ export default defineConfig(async (): Promise<Options[]> => {
         serviceworker: path.resolve(PACKAGE_DIR, './src/serviceworker/index.ts'),
       },
       env: {
-        API_URL: "",
+        API_URL: '',
         NODE_ENV: process.env['NODE_ENV'] || 'development',
       },
       esbuildOptions(options) {
