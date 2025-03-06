@@ -15,6 +15,7 @@ export const GetEpisodeListResponseSchema = createSelectSchema(episode)
       id: true,
     }),
     pages: createSelectSchema(episodePage)
+      .pick({})
       .extend({
         image: createSelectSchema(image).pick({
           id: true,

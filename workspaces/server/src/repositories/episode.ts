@@ -168,11 +168,7 @@ class EpisodeRepository implements EpisodeRepositoryInterface {
       if (result[0] == null) {
         throw new HTTPException(500, { message: 'Failed to create episode.' });
       }
-      return this.read({
-        params: {
-          episodeId: result[0].episodeId,
-        },
-      });
+      return ok({ id: result[0].episodeId });
     } catch (cause) {
       if (cause instanceof HTTPException) {
         return err(cause);
@@ -196,11 +192,7 @@ class EpisodeRepository implements EpisodeRepositoryInterface {
       if (result[0] == null) {
         throw new HTTPException(500, { message: `Failed to update episode:${options.params.episodeId}.` });
       }
-      return this.read({
-        params: {
-          episodeId: result[0].episodeId,
-        },
-      });
+      return ok({});
     } catch (cause) {
       if (cause instanceof HTTPException) {
         return err(cause);
