@@ -15,6 +15,7 @@ const SearchPage: React.FC = () => {
 
   const [isClient, setIsClient] = useState(false);
   const [keyword, setKeyword] = useState('');
+  const [debouncedKeyword, setDebouncedKeyword] = useState('');
 
   const onChangedInput = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,6 +28,15 @@ const SearchPage: React.FC = () => {
     setIsClient(true);
   }, []);
 
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setDebouncedKeyword(keyword);
+    }, 1000);
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [keyword]);
+
   return (
     <Box px={Space * 2}>
       <Input disabled={!isClient} onChange={onChangedInput} />
@@ -34,7 +44,7 @@ const SearchPage: React.FC = () => {
         <Text color={Color.MONO_100} id={searchResultsA11yId} typography={Typography.NORMAL20} weight="bold">
           検索結果
         </Text>
-        {keyword !== '' && <SearchResult books={books} keyword={keyword} />}
+        {debouncedKeyword !== '' && <SearchResult books={books} keyword={debouncedKeyword} />}
       </Box>
     </Box>
   );
